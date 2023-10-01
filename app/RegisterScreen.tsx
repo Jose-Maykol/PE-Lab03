@@ -4,56 +4,65 @@ import { Text, View, TextInput, Button, StyleSheet } from "react-native";
 import DatePicker from "react-native-datepicker";
 
 export default function RegisterScreen() {
-  const [nombresApellidos, setNombresApellidos] = useState("");
+  const [fullname, setFullname] = useState("");
   const [email, setEmail] = useState("");
-  const [telefono, setTelefono] = useState("");
-  const [fechaEvento, setFechaEvento] = useState("");
+  const [phone, setPhone] = useState("");
+  const [eventDate, setEventDate] = useState("");
 
-  const handleRegistrar = () => {
-    console.log("Nombres y Apellidos:", nombresApellidos);
-    console.log("Correo Electrónico:", email);
-    console.log("Número Telefónico:", telefono);
-    console.log("Fecha del Evento:", fechaEvento);
+  const handleRegister = () => {
+    console.log("Fullname:", fullname);
+    console.log("Email:", email);
+    console.log("Phone:", phone);
+    console.log("Event Date:", eventDate);
   };
 
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text style={styles.label}>Nombres y Apellidos:</Text>
+    <View
+      style={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        // backgroundColor: "#00B5A0",
+      }}
+    >
+      <Text style={styles.title}>Register</Text>
       <TextInput
         style={styles.input}
-        value={nombresApellidos}
-        onChangeText={(text) => setNombresApellidos(text)}
+        value={fullname}
+        placeholder="Fullname:"
+        onChangeText={(text) => setFullname(text)}
       />
 
-      <Text style={styles.label}>Correo Electrónico:</Text>
       <TextInput
         style={styles.input}
         value={email}
         onChangeText={(text) => setEmail(text)}
         keyboardType="email-address"
+        placeholder="Email:"
       />
 
-      <Text style={styles.label}>Número Telefónico:</Text>
       <TextInput
         style={styles.input}
-        value={telefono}
-        onChangeText={(text) => setTelefono(text)}
+        value={phone}
+        onChangeText={(text) => setPhone(text)}
         keyboardType="phone-pad"
+        placeholder="Phone:"
       />
 
-      <Text style={styles.label}>Fecha del Evento:</Text>
       <DatePicker
         // style={styles.datePicker}
-        date={fechaEvento}
+        date={eventDate}
         mode="date"
-        placeholder="Seleccionar Fecha"
+        placeholder="Select date"
         format="YYYY-MM-DD"
         confirmBtnText="Confirmar"
         cancelBtnText="Cancelar"
-        onDateChange={(date) => setFechaEvento(date)}
+        onDateChange={(date) => setEventDate(date)}
       />
 
-      <Button title="Registrar" onPress={handleRegistrar} />
+      <View style={styles.button}>
+        <Button title="Save" onPress={handleRegister} />
+      </View>
     </View>
   );
 }
@@ -63,6 +72,14 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     justifyContent: "center",
+  },
+  title: {
+    fontSize: 32,
+    fontWeight: "bold",
+    color: "#17635A",
+    fontFamily: "sans-serif",
+    textTransform: "uppercase",
+    marginBottom: 32,
   },
   label: {
     fontSize: 18,
@@ -74,6 +91,12 @@ const styles = StyleSheet.create({
     borderColor: "#ccc",
     borderRadius: 5,
     padding: 10,
-    marginBottom: 10,
+    marginBottom: 32,
+  },
+  button: {
+    marginTop: 24,
+    width: "60%",
+    borderRadius: 16,
+    padding: 8
   },
 });

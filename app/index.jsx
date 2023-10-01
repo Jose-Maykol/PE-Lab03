@@ -2,6 +2,7 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { StyleSheet } from "react-native";
 
 import ProfileScreen from "./ProfileScreen";
 import HomeScreen from "./HomeScreen";
@@ -14,17 +15,15 @@ export default function App() {
     <NavigationContainer>
       <Tab.Navigator 
         screenOptions={({ route }) => ({
-          tabBarIcon: ({ focused, color, size }) => {
+          tabBarIcon: ({ color, size }) => {
             let iconName;
 
             if (route.name === "Home") {
-              iconName = focused
-                ? "ios-information-circle"
-                : "ios-information-circle-outline";
-            } else if (route.name === "Settings") {
-              iconName = focused ? "ios-list" : "ios-list-outline";
+              iconName = "home";
+            } else if (route.name === "Register") {
+              iconName = "list";
             } else if (route.name === "Profile") {
-              iconName = focused ? "ios-profile" : "ios-profile";
+              iconName = "person";
             }
 
             // You can return any component that you like here!
@@ -32,14 +31,19 @@ export default function App() {
           },
           tabBarActiveTintColor: "tomato",
           tabBarInactiveTintColor: "gray",
-          headerShown: false
-        })
-      }
+          headerShown: false,
+        })}
       >
         <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Settings" component={RegisterScreen} />
+        <Tab.Screen name="Register" component={RegisterScreen} />
         <Tab.Screen name="Profile" component={ProfileScreen} />
       </Tab.Navigator>
     </NavigationContainer>
   );
 }
+
+const tabStyles = StyleSheet.create({
+  tab_menu: {
+    // backgroundColor: "#00B5A0"
+  }
+})

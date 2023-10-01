@@ -21,3 +21,5 @@ npm install @react-navigation/bottom-tabs
 
 - [React Native Components](https://reactnative.dev/docs/components-and-apis)
 - [React Navigation - Tab Navigation](https://reactnavigation.org/docs/tab-based-navigation/)
+- [IonIcons](https://ionic.io/ionicons/)
+- [react-native-vector-icons](https://github.com/oblador/react-native-vector-icons#bundled-icon-sets)
