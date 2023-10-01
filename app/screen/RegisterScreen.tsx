@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Text, View, TextInput, Button, StyleSheet } from "react-native";
 
 import DatePicker from "react-native-datepicker";
+import { globalStyles } from "./globalStyles";
 
 export default function RegisterScreen() {
   const [fullname, setFullname] = useState("");
@@ -17,15 +18,8 @@ export default function RegisterScreen() {
   };
 
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        // backgroundColor: "#00B5A0",
-      }}
-    >
-      <Text style={styles.title}>Register</Text>
+    <View style={globalStyles.container}>
+      <Text style={globalStyles.title}>Register</Text>
       <TextInput
         style={styles.input}
         value={fullname}
@@ -68,19 +62,6 @@ export default function RegisterScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    justifyContent: "center",
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: "bold",
-    color: "#17635A",
-    fontFamily: "sans-serif",
-    textTransform: "uppercase",
-    marginBottom: 32,
-  },
   label: {
     fontSize: 18,
     fontWeight: "bold",
@@ -95,8 +76,8 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 24,
-    width: "60%",
+    width: "100%",
     borderRadius: 16,
-    padding: 8
+    padding: 8,
   },
 });

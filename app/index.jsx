@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { StyleSheet } from "react-native";
 
-import ProfileScreen from "./screen/ProfileScreen";
+import AttendeesScreen from "./screen/AttendeesScreen";
 import HomeScreen from "./screen/HomeScreen";
 import RegisterScreen from "./screen/RegisterScreen";
 
@@ -13,30 +13,30 @@ const Tab = createBottomTabNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Tab.Navigator 
+      <Tab.Navigator
         screenOptions={({ route }) => ({
-          tabBarIcon: ({ color, size }) => {
+          tabBarIcon: ({ color, size, focused }) => {
             let iconName;
 
             if (route.name === "Home") {
-              iconName = "home";
+              iconName = focused ? "home" : "home-outline";
             } else if (route.name === "Register") {
-              iconName = "list";
-            } else if (route.name === "Profile") {
-              iconName = "person";
+              iconName = focused ? "book" : "book-outline";
+            } else if (route.name === "Attendees") {
+              iconName = focused ? "list" : "list-outline";
             }
 
             // You can return any component that you like here!
             return <Ionicons name={iconName} size={size} color={color} />;
           },
-          tabBarActiveTintColor: "tomato",
+          tabBarActiveTintColor: "#17635A",
           tabBarInactiveTintColor: "gray",
           headerShown: false,
         })}
       >
         <Tab.Screen name="Home" component={HomeScreen} />
         <Tab.Screen name="Register" component={RegisterScreen} />
-        <Tab.Screen name="Profile" component={ProfileScreen} />
+        <Tab.Screen name="Attendees" component={AttendeesScreen} />
       </Tab.Navigator>
     </NavigationContainer>
   );
@@ -45,5 +45,5 @@ export default function App() {
 const tabStyles = StyleSheet.create({
   tab_menu: {
     // backgroundColor: "#00B5A0"
-  }
-})
+  },
+});
