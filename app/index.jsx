@@ -4,9 +4,9 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { StyleSheet } from "react-native";
 
-import ProfileScreen from "./ProfileScreen";
-import HomeScreen from "./HomeScreen";
-import RegisterScreen from "./RegisterScreen";
+import ProfileScreen from "./screen/ProfileScreen";
+import HomeScreen from "./screen/HomeScreen";
+import RegisterScreen from "./screen/RegisterScreen";
 
 const Tab = createBottomTabNavigator();
 
