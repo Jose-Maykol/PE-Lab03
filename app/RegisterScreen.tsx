@@ -1,23 +1,23 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
-import DatePicker from 'react-native-datepicker';
+import React, { useState } from "react";
+import { Text, View, TextInput, Button, StyleSheet } from "react-native";
 
-export default function Main() {
-  const [nombresApellidos, setNombresApellidos] = useState('');
-  const [email, setEmail] = useState('');
-  const [telefono, setTelefono] = useState('');
-  const [fechaEvento, setFechaEvento] = useState('');
+import DatePicker from "react-native-datepicker";
+
+export default function RegisterScreen() {
+  const [nombresApellidos, setNombresApellidos] = useState("");
+  const [email, setEmail] = useState("");
+  const [telefono, setTelefono] = useState("");
+  const [fechaEvento, setFechaEvento] = useState("");
 
   const handleRegistrar = () => {
-    
-    console.log('Nombres y Apellidos:', nombresApellidos);
-    console.log('Correo Electrónico:', email);
-    console.log('Número Telefónico:', telefono);
-    console.log('Fecha del Evento:', fechaEvento);
+    console.log("Nombres y Apellidos:", nombresApellidos);
+    console.log("Correo Electrónico:", email);
+    console.log("Número Telefónico:", telefono);
+    console.log("Fecha del Evento:", fechaEvento);
   };
 
   return (
-    <View style={styles.container}>
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <Text style={styles.label}>Nombres y Apellidos:</Text>
       <TextInput
         style={styles.input}
@@ -43,7 +43,7 @@ export default function Main() {
 
       <Text style={styles.label}>Fecha del Evento:</Text>
       <DatePicker
-        style={styles.datePicker}
+        // style={styles.datePicker}
         date={fechaEvento}
         mode="date"
         placeholder="Seleccionar Fecha"
@@ -62,16 +62,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   label: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   input: {
     fontSize: 16,
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     borderRadius: 5,
     padding: 10,
     marginBottom: 10,
