@@ -7,6 +7,7 @@ import { StyleSheet } from "react-native";
 import AttendeesScreen from "./screen/AttendeesScreen";
 import HomeScreen from "./screen/HomeScreen";
 import RegisterScreen from "./screen/RegisterScreen";
+import ConferencesScreen from "./screen/ConferencesScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -24,6 +25,8 @@ export default function App() {
               iconName = focused ? "book" : "book-outline";
             } else if (route.name === "Attendees") {
               iconName = focused ? "list" : "list-outline";
+            } else if (route.name === "Conferences") {
+              iconName = focused ? "compass" : "compass-outline";
             }
 
             // You can return any component that you like here!
@@ -37,6 +40,7 @@ export default function App() {
         <Tab.Screen name="Home" component={HomeScreen} />
         <Tab.Screen name="Register" component={RegisterScreen} />
         <Tab.Screen name="Attendees" component={AttendeesScreen} />
+        <Tab.Screen name="Conferences" component={ConferencesScreen} />
       </Tab.Navigator>
     </NavigationContainer>
   );
