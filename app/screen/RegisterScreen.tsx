@@ -118,7 +118,7 @@ export default function RegisterScreen() {
       />)}
 
       <View style={styles.button}>
-        <Button color="green" title="Save" onPress={handleRegister} />
+        <Button title="Save" onPress={handleRegister} />
       </View>
     </View>
   );

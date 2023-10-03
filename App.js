@@ -5,7 +5,7 @@ import Main from "./app/index";
 export default function App() {
   useEffect(() => {
     createDatabase();
-    insertCongresses()
+    //insertCongresses()
   }, []);
   return <Main />;
 }
