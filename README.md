@@ -23,3 +23,4 @@ npm install @react-navigation/bottom-tabs
 - [React Navigation - Tab Navigation](https://reactnavigation.org/docs/tab-based-navigation/)
 - [IonIcons](https://ionic.io/ionicons/)
 - [react-native-vector-icons](https://github.com/oblador/react-native-vector-icons#bundled-icon-sets)
+- [Dropdown picker documentation](https://hossein-zare.github.io/react-native-dropdown-picker-website/docs)
