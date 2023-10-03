@@ -1,52 +1,19 @@
 import React, { useState } from "react";
-import { Text, View, FlatList, Button, Alert, StyleSheet, Dimensions } from "react-native";
+import { Text, TextInput, View, FlatList, Button, Alert, StyleSheet, Dimensions, TouchableOpacity } from "react-native";
 import { globalStyles } from "./globalStyles";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { getCongressesByParticipant } from "../database/database";
 
-const data = [
-  {
-    id: '1',
-    title: 'Congreso de Tecnología 2023',
-    description: 'Un congreso sobre las últimas tendencias en tecnología.',
-    date: '10 de Noviembre, 2023',
-    cost: '$100'
-  },
-  {
-    id: '2',
-    title: 'Congreso de Tecnología 2024',
-    description: 'Un congreso sobre las últimas tendencias en tecnología.',
-    date: '10 de Noviembre, 2024',
-    cost: '$100'
-  },
-  {
-    id: '3',
-    title: 'Congreso de Tecnología 2025',
-    description: 'Un congreso sobre las últimas tendencias en tecnología.',
-    date: '10 de Noviembre, 2025',
-    cost: '$100'
-  },
-  {
-    id: '4',
-    title: 'Congreso de Tecnología 2026',
-    description: 'Un congreso sobre las últimas tendencias en tecnología.',
-    date: '10 de Noviembre, 2026',
-    cost: '$100'
-  },
-  {
-    id: '5',
-    title: 'Congreso de Tecnología 2027',
-    description: 'Un congreso sobre las últimas tendencias en tecnología.',
-    date: '10 de Noviembre, 2027',
-    cost: '$100'
-  },
-];
 
-export default function ConferencesScreen({ navigation }) {
 
-  const [conferencesData, setConferencesData] = useState(data);
+export default function ConferencesScreen() {
+
+  const [data, setData] = useState([]);
+  const [searchValue, setSearchValue] = useState('');
+
 
   const handleRemoveConference = (id) => {
-    setConferencesData(conferencesData.filter((item) => item.id !== id));
+    setData(data.filter((item) => item.id !== id));
   }
 
   const handleCancelRegistration = (id, conferenceTitle) => {
@@ -66,30 +33,55 @@ export default function ConferencesScreen({ navigation }) {
     );
   }
 
+  const handleSearchCongresses = async () => {
+    await getCongressesByParticipant(searchValue, (response) => {
+      console.log(response);
+      setData(response);
+    });
+  }
+
   return (
     <View style={globalStyles.container}>
-      <Text style={globalStyles.title}>Mis Congresos</Text>
-      <Text style={styles.title}>Aqui se muestran los congresos en los que has registrado. Puedes cancelar tu inscripción en cualquier congreso.</Text>
-      <FlatList
-        data={conferencesData}
+      <Text style={globalStyles.title}>consult conferences</Text>
+      <Text style={styles.subTitle}>here you can check your conference registrations</Text>
+
+      <View style={styles.searchContainer} >
+        <TextInput
+          style={styles.input}
+          value={searchValue}
+          placeholder="Input lastname or email"
+          onChangeText={(text) => setSearchValue(text)}
+        />
+        <TouchableOpacity style={styles.iconContainer} onPress={() => {
+          handleSearchCongresses();
+        }}>
+          <Ionicons name="search" size={24} color="#007BFF" />
+        </TouchableOpacity>
+      </View>
+
+      <Text style={styles.subTitle}>Aqui veras tus congresos: </Text>
+
+      {data.length > 0 ? <FlatList
+        data={data}
         keyExtractor={(item) => item.id}
         showsVerticalScrollIndicator={false}
         renderItem={({ item }) => (
           <View style={styles.card}>
-            <View style={styles.infoContainer}>
-              <Text style={styles.title}>{item.title}</Text>
-              <Text style={styles.description} numberOfLines={1} ellipsizeMode="tail">{item.description}</Text>
+            <View style={styles.cardInfoContainer}>
+              <Text style={styles.infoTitle}>{item.title}</Text>
+              <Text style={styles.infoDescription} numberOfLines={1} ellipsizeMode="tail">{item.description}</Text>
               <View style={styles.dateContainer}>
-                <Ionicons name="calendar" size={20} color="red" />
+                <Ionicons name="calendar" size={30} color="blue" />
                 <Text style={styles.date}>{item.date}</Text>
               </View>
             </View>
-            <View style={styles.buttonContainer}>
-              <Button title="Cancelar inscripción" onPress={() => handleCancelRegistration(item.id, item.title)} />
-            </View>
+            <TouchableOpacity onPress={() => handleCancelRegistration(item.id, item.title)}>
+              <Ionicons name="trash" size={20} color="red" />
+            </TouchableOpacity>
           </View>
         )}
-      />
+      /> : searchValue ? <Text>No hay congresos registrados</Text>
+        : null}
     </View>
   );
 }
@@ -97,6 +89,36 @@ export default function ConferencesScreen({ navigation }) {
 const screenWidth = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
+  container: {
+    padding: 32,
+  },
+  subTitle: {
+    fontSize: 19,
+    textAlign: "center",
+    marginBottom: 32,
+    color: "#555",
+  },
+  searchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 30,
+    justifyContent: 'space-between'
+  },
+  input: {
+    width: screenWidth * 0.70,
+    fontSize: 16,
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 5,
+    padding: 10,
+  },
+  iconContainer: {
+    padding: 10,
+    borderRadius: 25,
+    backgroundColor: '#f5f5f5',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   card: {
     backgroundColor: '#fff',
     marginBottom: 15,
@@ -112,23 +134,18 @@ const styles = StyleSheet.create({
     elevation: 5,
     flexDirection: 'row',
     alignItems: 'center',
-    flexWrap: 'wrap',
+    justifyContent: 'space-between',
   },
-  infoContainer: {
-    width: screenWidth * 0.57,
+  cardInfoContainer: {
+    width: screenWidth * 0.65,
     paddingRight: 10,
   },
-  buttonContainer: {
-    width: screenWidth * 0.27,
-    fontSize: 10,
-    flexWrap: 'wrap'
-  },
-  title: {
+  infoTitle: {
     fontSize: 15,
     fontWeight: 'bold',
     marginBottom: 5
   },
-  description: {
+  infoDescription: {
     fontSize: 13,
     marginBottom: 5,
     flexShrink: 1

@@ -147,3 +147,25 @@ export const getParticipants = (callback) => {
     );
   });
 }
+
+export const getCongressesByParticipant = (searchValue, callback) => {
+  db.transaction((tx) => {
+    tx.executeSql(
+      `
+      SELECT C.* 
+      FROM Congresses C
+      JOIN Attendance A ON C.id = A.congress_id
+      JOIN Participants P ON A.participant_id = P.id
+      WHERE P.last_name = ? OR P.email = ?;
+      `,
+      [searchValue, searchValue],
+      (_, { rows }) => {
+        callback(rows._array);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  });
+  
+}
