@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { Text, View, StyleSheet, FlatList, Button } from "react-native";
 
 import DropDownPicker from "react-native-dropdown-picker";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 import { globalStyles } from "./globalStyles";
 
+// TODO: Get data from DB
 const conferences = [
   {
     id: 0,
@@ -135,7 +137,8 @@ export default function AttendeesScreen() {
     { label: "AppTalk I", value: "5" },
   ]);
 
-  const [conference, setAttendees] = useState([]);
+  const [attendees, setAttendees] = useState([]);
+  const [conferenceName, setConferenceName] = useState("");
 
   const getAttendees = () => {
     if (!selectedConference) {
@@ -145,6 +148,9 @@ export default function AttendeesScreen() {
     const conference = conferences.find(
       (conf) => conf.id.toString() === selectedConference
     );
+
+    setConferenceName(conference.name);
+
     return conference ? conference.attendees : [];
   };
 
@@ -171,28 +177,40 @@ export default function AttendeesScreen() {
         showArrowIcon={true}
       />
 
-      <Text style={{ marginVertical: 8 }} />
+      <Text style={{ marginVertical: 12 }} />
 
       <Button
         onPress={onPressAttendees}
-        title="List attendees"
-        color="#17635A"
+        title="Check attendees"
+        color="#007BFF"
         accessibilityLabel="Learn more about this purple button"
       />
 
       <Text style={attendeesStyles.attendees_list}>
-        {selectedConference ? `NAME attendees` : "Here will be the attendees"}
+        {conferenceName
+          ? `${conferenceName} - Attendees`
+          : "Here will be the attendees"}
       </Text>
 
-      {conference.length > 0 ? (
+      {attendees.length > 0 ? (
         <FlatList
-          data={conference}
-          renderItem={({ item }) => <Text>{item.fullname}</Text>}
+          data={attendees}
+          renderItem={({ item }) => (
+            <View style={attendeesStyles.card}>
+              <View style={attendeesStyles.attendeeContainer}>
+                <Ionicons name="person" size={24} color="#007BFF" />
+                <View style={attendeesStyles.attendee}>
+                  <Text style={attendeesStyles.fullname}>{item.fullname}</Text>
+                  <Text style={attendeesStyles.email}>{item.email}</Text>
+                </View>
+              </View>
+            </View>
+          )}
           keyExtractor={(item) => item.fullname}
         />
-      ) : (
+      ) : conferenceName ? (
         <Text>No attendees yet!</Text>
-      )}
+      ) : null}
     </View>
   );
 }
@@ -202,15 +220,62 @@ const attendeesStyles = StyleSheet.create({
     padding: 32,
   },
   description: {
-    fontSize: 20,
+    fontSize: 19,
     textAlign: "center",
-    marginBottom: 24,
+    marginBottom: 32,
+    color: "#555",
   },
   button: {
     marginTop: 24,
   },
   attendees_list: {
-    marginTop: 24,
-    fontSize: 20,
+    marginTop: 36,
+    fontSize: 24,
+    marginBottom: 24,
+    color: "#007BFF",
+    textAlign: "center",
+    fontWeight: "bold",
+    fontStyle: "italic",
+  },
+
+  card: {
+    backgroundColor: "#fff",
+    marginBottom: 15,
+    padding: 10,
+    borderRadius: 8,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    flexDirection: "row",
+    alignItems: "center",
+    flexWrap: "wrap",
+  },
+  attendeeContainer: {
+    flexDirection: "row",
+    gap: 5,
+    alignItems: "center",
+    marginBottom: 5,
+    flex: 1,
+  },
+  attendee: {
+    flexDirection: "column",
+    marginLeft: 16,
+    gap: 5,
+    flex: 1,
+    justifyContent: "center",
+  },
+  fullname: {
+    fontSize: 16,
+    color: "#007BFF",
+    fontWeight: "bold",
+  },
+  email: {
+    color: "#888",
+    fontSize: 16,
   },
 });
