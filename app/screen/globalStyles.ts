@@ -9,7 +9,7 @@ export const globalStyles = StyleSheet.create({
   title: {
     fontSize: 32,
     fontWeight: "bold",
-    color: "#17635A",
+    color: "#007BFF",
     fontFamily: "sans-serif",
     textTransform: "uppercase",
     marginBottom: 32,
