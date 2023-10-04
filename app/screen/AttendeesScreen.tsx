@@ -7,13 +7,13 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { globalStyles } from "./globalStyles";
 
 // TODO: Get data from DB
-const conferences = [
+const congresses = [
   {
     id: 0,
-    name: "Apple Conference XVI",
-    date: "2023-09-20",
-    location: "San Francisco, CA",
+    congress_name: "Apple Conference XVI",
     description: "Annual Apple developer conference",
+    start_date: "2023-09-20",
+    end_date: "2023-09-20",
     attendees: [
       {
         fullname: "John Smith",
@@ -29,10 +29,10 @@ const conferences = [
   },
   {
     id: 1,
-    name: "CodeWave IX",
-    date: "2023-10-05",
-    location: "New York City, NY",
+    congress_name: "CodeWave IX",
     description: "CodeWave developer conference",
+    start_date: "2023-10-05",
+    end_date: "2023-10-05",
     attendees: [
       {
         fullname: "Sarah Brown",
@@ -48,10 +48,10 @@ const conferences = [
   },
   {
     id: 2,
-    name: "AppCon X",
-    date: "2023-11-15",
-    location: "Los Angeles, CA",
+    congress_name: "AppCon X",
     description: "Annual AppCon conference",
+    start_date: "2023-11-15",
+    end_date: "2023-11-15",
     attendees: [
       {
         fullname: "Emily Wilson",
@@ -67,10 +67,10 @@ const conferences = [
   },
   {
     id: 3,
-    name: "MobileTech XIII",
-    date: "2023-12-03",
-    location: "San Jose, CA",
+    congress_name: "MobileTech XIII",
     description: "MobileTech developer summit",
+    start_date: "2023-12-03",
+    end_date: "2023-12-03",
     attendees: [
       {
         fullname: "Olivia Martinez",
@@ -86,10 +86,10 @@ const conferences = [
   },
   {
     id: 4,
-    name: "DevSync VII",
-    date: "2024-01-18",
-    location: "Chicago, IL",
+    congress_name: "DevSync VII",
     description: "DevSync developer conference",
+    start_date: "2024-01-18",
+    end_date: "2024-01-18",
     attendees: [
       {
         fullname: "Sophia Clark",
@@ -105,10 +105,10 @@ const conferences = [
   },
   {
     id: 5,
-    name: "AppTalk I",
-    date: "2024-02-10",
-    location: "Seattle, WA",
+    congress_name: "AppTalk I",
     description: "Inaugural AppTalk event",
+    start_date: "2024-02-10",
+    end_date: "2024-02-10",
     attendees: [
       {
         fullname: "Liam Harris",
@@ -126,7 +126,7 @@ const conferences = [
 
 export default function AttendeesScreen() {
   const [open, setOpen] = useState(false);
-  const [selectedConference, setSelectedConference] = useState(null);
+  const [selectedCongress, setSelectedCongress] = useState(null);
   // TODO: Get Conferences from DB
   const [items, setItems] = useState([
     { label: "Apple Conference XVI", value: "0" },
@@ -138,20 +138,20 @@ export default function AttendeesScreen() {
   ]);
 
   const [attendees, setAttendees] = useState([]);
-  const [conferenceName, setConferenceName] = useState("");
+  const [congressName, setCongressName] = useState("");
 
   const getAttendees = () => {
-    if (!selectedConference) {
+    if (!selectedCongress) {
       return [];
     }
 
-    const conference = conferences.find(
-      (conf) => conf.id.toString() === selectedConference
+    const congress = congresses.find(
+      (conf) => conf.id.toString() === selectedCongress
     );
 
-    setConferenceName(conference.name);
+    setCongressName(congress.congress_name);
 
-    return conference ? conference.attendees : [];
+    return congress ? congress.attendees : [];
   };
 
   const onPressAttendees = () => {
@@ -167,10 +167,10 @@ export default function AttendeesScreen() {
 
       <DropDownPicker
         open={open}
-        value={selectedConference}
+        value={selectedCongress}
         items={items}
         setOpen={setOpen}
-        setValue={setSelectedConference}
+        setValue={setSelectedCongress}
         setItems={setItems}
         placeholder="Select a conference"
         showTickIcon={true}
@@ -187,8 +187,8 @@ export default function AttendeesScreen() {
       />
 
       <Text style={attendeesStyles.attendees_list}>
-        {conferenceName
-          ? `${conferenceName} - Attendees`
+        {congressName
+          ? `${congressName} - Attendees`
           : "Here will be the attendees"}
       </Text>
 
@@ -208,7 +208,7 @@ export default function AttendeesScreen() {
           )}
           keyExtractor={(item) => item.fullname}
         />
-      ) : conferenceName ? (
+      ) : congressName ? (
         <Text>No attendees yet!</Text>
       ) : null}
     </View>
