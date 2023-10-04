@@ -69,14 +69,14 @@ export default function RegisterScreen() {
       <TextInput
         style={styles.input}
         value={name}
-        placeholder="Nombres:"
+        placeholder="Nane:"
         onChangeText={(text) => setName(text)}
       />
 
       <TextInput
         style={styles.input}
         value={lastname}
-        placeholder="Apellidos:"
+        placeholder="Full name:"
         onChangeText={(text) => setLastname(text)}
       />
 
@@ -93,7 +93,7 @@ export default function RegisterScreen() {
         value={phone}
         onChangeText={(text) => setPhone(text)}
         keyboardType="phone-pad"
-        placeholder="Numero:"
+        placeholder="Number:"
       />
 
       <DropDownPicker
@@ -104,13 +104,13 @@ export default function RegisterScreen() {
         setOpen={setOpen}
         setValue={setSelectedConference}
         setItems={setCongresses}
-        placeholder="Congreso"
+        placeholder="Conference"
         showTickIcon={true}
         showArrowIcon={true}
       />
       
       <TouchableOpacity style={styles.datePicker} onPress={onPress}>
-        <Text>Fecha del evento</Text>
+        <Text>Attendance date</Text>
       </TouchableOpacity>
 
       {show && (<DateTimePicker
@@ -120,7 +120,7 @@ export default function RegisterScreen() {
       />)}
 
       <View style={styles.button}>
-        <Button title="Save" color="#007BFF" onPress={handleRegister} />
+        <Button title="REGISTER" color="#007BFF" onPress={handleRegister} />
       </View>
     </View>
   );
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
 
   select: {
     backgroundColor: 'transparent',
-    borderColor: 'gray',
+    borderColor: "#ccc",
   },
 
   datePicker: {
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
     borderWidth: 1,
-    borderColor: 'gray',
+    borderColor: "#ccc",
   },
   input: {
     fontSize: 16,
