@@ -13,6 +13,7 @@ export const globalStyles = StyleSheet.create({
     fontFamily: "sans-serif",
     textTransform: "uppercase",
     marginBottom: 32,
+    marginTop: 48,
     textAlign: "center",
   },
 });
