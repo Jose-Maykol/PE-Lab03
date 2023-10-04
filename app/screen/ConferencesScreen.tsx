@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Text, TextInput, View, FlatList, Button, Alert, StyleSheet, Dimensions, TouchableOpacity } from "react-native";
 import { globalStyles } from "./globalStyles";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { getCongressesByParticipant } from "../database/database";
+import { getCongressesByParticipant, removeAttendanceToCongress } from "../database/database";
 
 
 
@@ -12,11 +12,14 @@ export default function ConferencesScreen() {
   const [searchValue, setSearchValue] = useState('');
 
 
-  const handleRemoveConference = (id) => {
+  const handleRemoveConference = (id, participantID, congressID) => {
     setData(data.filter((item) => item.id !== id));
+    removeAttendanceToCongress(participantID, congressID, (response) => {
+      console.log(response);
+    });
   }
 
-  const handleCancelRegistration = (id, conferenceTitle) => {
+  const handleCancelRegistration = (id, conferenceTitle, participantID, congressID) => {
     Alert.alert('Cancelar Registro', `Estas seguro de cancelar tu registro al congreso "${conferenceTitle}"?`,
       [
         {
@@ -26,7 +29,7 @@ export default function ConferencesScreen() {
         },
         {
           text: 'Confirmar',
-          onPress: () => handleRemoveConference(id),
+          onPress: () => handleRemoveConference(id, participantID, congressID),
           style: 'destructive'
         }
       ]
@@ -43,7 +46,7 @@ export default function ConferencesScreen() {
   return (
     <View style={globalStyles.container}>
       <Text style={globalStyles.title}>consult conferences</Text>
-      <Text style={styles.subTitle}>here you can check your conference registrations</Text>
+      <Text style={styles.subTitle}>Here you can check your conference registrations</Text>
 
       <View style={styles.searchContainer} >
         <TextInput
@@ -68,14 +71,14 @@ export default function ConferencesScreen() {
         renderItem={({ item }) => (
           <View style={styles.card}>
             <View style={styles.cardInfoContainer}>
-              <Text style={styles.infoTitle}>{item.title}</Text>
+              <Text style={styles.infoTitle}>{item.congress_name}</Text>
               <Text style={styles.infoDescription} numberOfLines={1} ellipsizeMode="tail">{item.description}</Text>
               <View style={styles.dateContainer}>
                 <Ionicons name="calendar" size={30} color="blue" />
-                <Text style={styles.date}>{item.date}</Text>
+                <Text style={styles.date}>{item.start_date}</Text>
               </View>
             </View>
-            <TouchableOpacity onPress={() => handleCancelRegistration(item.id, item.title)}>
+            <TouchableOpacity onPress={() => handleCancelRegistration(item.id, item.congress_name, item.id, item.participant_id)}>
               <Ionicons name="trash" size={20} color="red" />
             </TouchableOpacity>
           </View>

@@ -104,6 +104,7 @@ export const insertParticipant = (participant, callback) => {
 }
 
 export const insertAttendance = (participantId, congressId) => {
+  console.log(participantId, congressId);
   db.transaction((tx) => {
     tx.executeSql(`
       INSERT INTO Attendance (participant_id, congress_id)
@@ -154,15 +155,13 @@ export const getParticipants = (callback) => {
 
 export const getCongressesByParticipant = (searchValue, callback) => {
   db.transaction((tx) => {
-    tx.executeSql(
-      `
-      SELECT C.* 
+    tx.executeSql(`
+      SELECT C.*, P.id AS participant_id
       FROM Congresses C
       JOIN Attendance A ON C.id = A.congress_id
       JOIN Participants P ON A.participant_id = P.id
-      WHERE P.last_name = ? OR P.email = ?;
-      `,
-      [searchValue, searchValue],
+      WHERE P.name LIKE ? OR P.last_name LIKE ? OR P.email LIKE ?;`,
+      [searchValue, searchValue, searchValue],
       (_, { rows }) => {
         callback(rows._array);
       },
@@ -171,24 +170,45 @@ export const getCongressesByParticipant = (searchValue, callback) => {
       }
     );
   });
-  
 }
 
 export const getParticipantsByCongress = (congressId, callback) => {
   db.transaction((tx) => {
-    tx.executeSql(
-      `
+    tx.executeSql(`
       SELECT P.* 
       FROM Participants P
       JOIN Attendance A ON P.id = A.participant_id
-      WHERE A.congress_id = ?;
-      `,
+      WHERE A.congress_id = ?;`,
       [congressId],
       (_, { rows }) => {
         callback(rows._array);
+        console.log(congressId);
       },
       (error) => {
         console.error('Error al consultar la base de datos:', error);
+      }
+    );
+  });
+};
+
+export const removeAttendanceToCongress = (participantId, congressId, callback) => {
+  db.transaction((tx) => {
+    tx.executeSql(
+      `
+      DELETE FROM Attendance
+      WHERE participant_id = ? AND congress_id = ?;
+      `,
+      [participantId, congressId],
+      (_, { rowsAffected }) => {
+        if (rowsAffected > 0) {
+          callback(true);
+        } else {
+          callback(false);
+        }
+      },
+      (error) => {
+        console.log(error);
+        callback(false);
       }
     );
   });

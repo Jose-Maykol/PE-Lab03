@@ -10,7 +10,6 @@ import { getCongresses, getParticipantsByCongress } from "../database/database";
 export default function AttendeesScreen() {
   const [open, setOpen] = useState(false);
   const [selectedCongress, setSelectedCongress] = useState(null);
-
   const [congresses, setCongresses] = useState([]);
   const [attendees, setAttendees] = useState([]);
 
@@ -21,7 +20,7 @@ export default function AttendeesScreen() {
     });
   }, []);
 
-  const handleCongressSelection = (selectedCongressId) => {
+  const handleCongressSelection = async (selectedCongressId) => {
     getParticipantsByCongress(selectedCongressId, (participants) => {
       // Hacer algo con los asistentes, como mostrarlos en tu interfaz
       console.log("Congress Attendees:", participants);

@@ -53,9 +53,9 @@ export default function RegisterScreen() {
       (insertedId) => {
         console.log(`Participant created with id: ${insertedId}`);
         setParticipantID(insertedId)
+        insertAttendance(insertedId, selectedConference);
       }
     );
-    insertAttendance(participantID, selectedConference);
     setName("");
     setLastname("");
     setEmail("");
@@ -108,7 +108,6 @@ export default function RegisterScreen() {
         showTickIcon={true}
         showArrowIcon={true}
       />
-
       
       <TouchableOpacity style={styles.datePicker} onPress={onPress}>
         <Text>Fecha del evento</Text>
@@ -117,12 +116,11 @@ export default function RegisterScreen() {
       {show && (<DateTimePicker
         value={eventDate}
         mode="date"
-
         onChange={onChange}
       />)}
 
       <View style={styles.button}>
-        <Button title="Save" onPress={handleRegister} />
+        <Button title="Save" color="#007BFF" onPress={handleRegister} />
       </View>
     </View>
   );
