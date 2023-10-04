@@ -131,7 +131,8 @@ const styles = StyleSheet.create({
   },
 
   select: {
-    backgroundColor: "transparent",
+    backgroundColor: 'transparent',
+    borderColor: 'gray',
   },
 
   datePicker: {

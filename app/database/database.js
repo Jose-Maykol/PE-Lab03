@@ -1,7 +1,7 @@
 // modulo para usar sqlite con expo y hacer consultas
 import * as SQLite from 'expo-sqlite';
 
-const db = SQLite.openDatabase('database.db');
+const db = SQLite.openDatabase('sqlite.db');
 
 export const createDatabase = () => {
 
@@ -24,7 +24,7 @@ export const createDatabase = () => {
     tx.executeSql(`
       CREATE TABLE IF NOT EXISTS Congresses (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        congress_name TEXT,
+        congress_name TEXT UNIQUE,
         description TEXT,
         start_date DATE,
         end_date DATE
@@ -50,19 +50,23 @@ export const createDatabase = () => {
 
 export const insertCongresses = () => {
   db.transaction((tx) => {
-    tx.executeSql(`
-    INSERT INTO Congresses (congress_name, description, start_date, end_date)
-    SELECT ?, ?, ?, ?
-    WHERE NOT EXISTS (
-      SELECT 1 FROM Congresses WHERE congress_name = ? AND start_date = ? AND end_date = ?
-    );
-    `,
-    [
-      'Congreso de Prueba',
-      'Congreso de Prueba para la materia de Desarrollo de Aplicaciones Moviles',
-      '2021-06-01',
-      '2021-06-02',
-    ],
+    tx.executeSql(
+      'INSERT INTO Congresses (congress_name, description, start_date, end_date) VALUES (?, ?, ?, ?)',
+    ['Conferencia sobre Desarrollo Ágil 2023', 'Una conferencia enfocada en las metodologías de desarrollo ágil y las mejores prácticas.', '2023-11-10', '2023-11-12'],
+    (_, results) => {
+      const rowsAffected = results.rowsAffected;
+      if (rowsAffected > 0) {
+        console.log('Congresses inserted');
+      } else {
+        console.log('Congresses not inserted');
+      }
+    });
+  });
+
+  db.transaction((tx) => {
+    tx.executeSql(
+      'INSERT INTO Congresses (congress_name, description, start_date, end_date) VALUES (?, ?, ?, ?)',
+    ['Congreso Internacional de Ingeniería de Software 2023', 'Un congreso anual que reúne a expertos en ingeniería de software de todo el mundo.', '2023-11-10', '2023-11-12'],
     (_, results) => {
       const rowsAffected = results.rowsAffected;
       if (rowsAffected > 0) {
