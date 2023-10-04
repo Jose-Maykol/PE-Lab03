@@ -1,144 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Text, View, StyleSheet, FlatList, Button } from "react-native";
 
 import DropDownPicker from "react-native-dropdown-picker";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 import { globalStyles } from "./globalStyles";
-
-// TODO: Get data from DB
-const congresses = [
-  {
-    id: 0,
-    congress_name: "Apple Conference XVI",
-    description: "Annual Apple developer conference",
-    start_date: "2023-09-20",
-    end_date: "2023-09-20",
-    attendees: [
-      {
-        fullname: "John Smith",
-        email: "john@example.com",
-        register_date: "2023-08-15",
-      },
-      {
-        fullname: "Alice Johnson",
-        email: "alice@example.com",
-        register_date: "2023-08-18",
-      },
-    ],
-  },
-  {
-    id: 1,
-    congress_name: "CodeWave IX",
-    description: "CodeWave developer conference",
-    start_date: "2023-10-05",
-    end_date: "2023-10-05",
-    attendees: [
-      {
-        fullname: "Sarah Brown",
-        email: "sarah@example.com",
-        register_date: "2023-09-10",
-      },
-      {
-        fullname: "David Lee",
-        email: "david@example.com",
-        register_date: "2023-09-12",
-      },
-    ],
-  },
-  {
-    id: 2,
-    congress_name: "AppCon X",
-    description: "Annual AppCon conference",
-    start_date: "2023-11-15",
-    end_date: "2023-11-15",
-    attendees: [
-      {
-        fullname: "Emily Wilson",
-        email: "emily@example.com",
-        register_date: "2023-10-20",
-      },
-      {
-        fullname: "Michael Davis",
-        email: "michael@example.com",
-        register_date: "2023-10-22",
-      },
-    ],
-  },
-  {
-    id: 3,
-    congress_name: "MobileTech XIII",
-    description: "MobileTech developer summit",
-    start_date: "2023-12-03",
-    end_date: "2023-12-03",
-    attendees: [
-      {
-        fullname: "Olivia Martinez",
-        email: "olivia@example.com",
-        register_date: "2023-11-05",
-      },
-      {
-        fullname: "Daniel White",
-        email: "daniel@example.com",
-        register_date: "2023-11-07",
-      },
-    ],
-  },
-  {
-    id: 4,
-    congress_name: "DevSync VII",
-    description: "DevSync developer conference",
-    start_date: "2024-01-18",
-    end_date: "2024-01-18",
-    attendees: [
-      {
-        fullname: "Sophia Clark",
-        email: "sophia@example.com",
-        register_date: "2023-12-15",
-      },
-      {
-        fullname: "Ethan Turner",
-        email: "ethan@example.com",
-        register_date: "2023-12-17",
-      },
-    ],
-  },
-  {
-    id: 5,
-    congress_name: "AppTalk I",
-    description: "Inaugural AppTalk event",
-    start_date: "2024-02-10",
-    end_date: "2024-02-10",
-    attendees: [
-      {
-        fullname: "Liam Harris",
-        email: "liam@example.com",
-        register_date: "2024-01-15",
-      },
-      {
-        fullname: "Ava Robinson",
-        email: "ava@example.com",
-        register_date: "2024-01-17",
-      },
-    ],
-  },
-];
+import { getCongresses } from "../database/database";
 
 export default function AttendeesScreen() {
   const [open, setOpen] = useState(false);
   const [selectedCongress, setSelectedCongress] = useState(null);
-  // TODO: Get Conferences from DB
-  const [items, setItems] = useState([
-    { label: "Apple Conference XVI", value: "0" },
-    { label: "CodeWave IX", value: "1" },
-    { label: "AppCon X", value: "2" },
-    { label: "MobileTech XIII", value: "3" },
-    { label: "DevSync VII", value: "4" },
-    { label: "AppTalk I", value: "5" },
-  ]);
 
+  const [congresses, setCongresses] = useState([]);
   const [attendees, setAttendees] = useState([]);
   const [congressName, setCongressName] = useState("");
+
+  useEffect(() => {
+    getCongresses((results) => {
+      console.log("Congresses:", congresses);
+      setCongresses(results)
+    });
+  }, []);
 
   const getAttendees = () => {
     if (!selectedCongress) {
@@ -168,10 +50,10 @@ export default function AttendeesScreen() {
       <DropDownPicker
         open={open}
         value={selectedCongress}
-        items={items}
+        items={congresses}
         setOpen={setOpen}
         setValue={setSelectedCongress}
-        setItems={setItems}
+        setItems={setCongresses}
         placeholder="Select a conference"
         showTickIcon={true}
         showArrowIcon={true}
