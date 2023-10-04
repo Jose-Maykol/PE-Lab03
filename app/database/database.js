@@ -173,3 +173,23 @@ export const getCongressesByParticipant = (searchValue, callback) => {
   });
   
 }
+
+export const getParticipantsByCongress = (congressId, callback) => {
+  db.transaction((tx) => {
+    tx.executeSql(
+      `
+      SELECT P.* 
+      FROM Participants P
+      JOIN Attendance A ON P.id = A.participant_id
+      WHERE A.congress_id = ?;
+      `,
+      [congressId],
+      (_, { rows }) => {
+        callback(rows._array);
+      },
+      (error) => {
+        console.error('Error al consultar la base de datos:', error);
+      }
+    );
+  });
+};

@@ -5,7 +5,7 @@ import DropDownPicker from "react-native-dropdown-picker";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 import { globalStyles } from "./globalStyles";
-import { getCongresses } from "../database/database";
+import { getCongresses, getParticipantsByCongress } from "../database/database";
 
 export default function AttendeesScreen() {
   const [open, setOpen] = useState(false);
@@ -13,31 +13,20 @@ export default function AttendeesScreen() {
 
   const [congresses, setCongresses] = useState([]);
   const [attendees, setAttendees] = useState([]);
-  const [congressName, setCongressName] = useState("");
 
   useEffect(() => {
     getCongresses((results) => {
       console.log("Congresses:", congresses);
-      setCongresses(results)
+      setCongresses(results);
     });
   }, []);
 
-  const getAttendees = () => {
-    if (!selectedCongress) {
-      return [];
-    }
-
-    const congress = congresses.find(
-      (conf) => conf.id.toString() === selectedCongress
-    );
-
-    setCongressName(congress.congress_name);
-
-    return congress ? congress.attendees : [];
-  };
-
-  const onPressAttendees = () => {
-    setAttendees(getAttendees());
+  const handleCongressSelection = (selectedCongressId) => {
+    getParticipantsByCongress(selectedCongressId, (participants) => {
+      // Hacer algo con los asistentes, como mostrarlos en tu interfaz
+      console.log("Congress Attendees:", participants);
+      setAttendees(participants);
+    });
   };
 
   return (
@@ -62,15 +51,15 @@ export default function AttendeesScreen() {
       <Text style={{ marginVertical: 12 }} />
 
       <Button
-        onPress={onPressAttendees}
+        onPress={() => handleCongressSelection(selectedCongress)}
         title="Check attendees"
         color="#007BFF"
         accessibilityLabel="Learn more about this purple button"
       />
 
       <Text style={attendeesStyles.attendees_list}>
-        {congressName
-          ? `${congressName} - Attendees`
+        {attendees.length > 0
+          ? `List of Attendees`
           : "Here will be the attendees"}
       </Text>
 
@@ -82,16 +71,16 @@ export default function AttendeesScreen() {
               <View style={attendeesStyles.attendeeContainer}>
                 <Ionicons name="person" size={24} color="#007BFF" />
                 <View style={attendeesStyles.attendee}>
-                  <Text style={attendeesStyles.fullname}>{item.fullname}</Text>
+                  <Text style={attendeesStyles.fullname}>{item.name} {item.last_name}</Text>
                   <Text style={attendeesStyles.email}>{item.email}</Text>
                 </View>
               </View>
             </View>
           )}
-          keyExtractor={(item) => item.fullname}
+          keyExtractor={(item) => item.id}
         />
-      ) : congressName ? (
-        <Text>No attendees yet!</Text>
+      ) : attendees.length == 0 ? (
+        <Text style={{textAlign: "center"}}>No attendees yet!</Text>
       ) : null}
     </View>
   );
