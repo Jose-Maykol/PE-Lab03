@@ -62,7 +62,7 @@ export default function ConferencesScreen() {
         </TouchableOpacity>
       </View>
 
-      <Text style={styles.subTitle}>Aqui veras tus congresos: </Text>
+      <Text style={styles.subTitle}>Your conferences: </Text>
 
       {data.length > 0 ? <FlatList
         data={data}
@@ -74,7 +74,7 @@ export default function ConferencesScreen() {
               <Text style={styles.infoTitle}>{item.congress_name}</Text>
               <Text style={styles.infoDescription} numberOfLines={1} ellipsizeMode="tail">{item.description}</Text>
               <View style={styles.dateContainer}>
-                <Ionicons name="calendar" size={30} color="blue" />
+                <Ionicons name="calendar" size={30} color="#007BFF" />
                 <Text style={styles.date}>{item.start_date}</Text>
               </View>
             </View>
@@ -83,7 +83,7 @@ export default function ConferencesScreen() {
             </TouchableOpacity>
           </View>
         )}
-      /> : searchValue ? <Text>No hay congresos registrados</Text>
+      /> : searchValue ? <Text>There are no registered conferences</Text>
         : null}
     </View>
   );

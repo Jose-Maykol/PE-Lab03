@@ -138,6 +138,22 @@ export const getCongresses = (callback) => {
   });
 }
 
+export const getAllCongresses = (callback) => {
+  db.transaction((tx) => {
+    tx.executeSql(
+      'SELECT * FROM Congresses;',
+      [],
+      (_, { rows }) => {
+        callback(rows._array);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  });
+}
+
+
 export const getParticipants = (callback) => {
   db.transaction((tx) => {
     tx.executeSql(
@@ -193,11 +209,9 @@ export const getParticipantsByCongress = (congressId, callback) => {
 
 export const removeAttendanceToCongress = (participantId, congressId, callback) => {
   db.transaction((tx) => {
-    tx.executeSql(
-      `
+    tx.executeSql(`
       DELETE FROM Attendance
-      WHERE participant_id = ? AND congress_id = ?;
-      `,
+      WHERE participant_id = ? AND congress_id = ?;`,
       [participantId, congressId],
       (_, { rowsAffected }) => {
         if (rowsAffected > 0) {
