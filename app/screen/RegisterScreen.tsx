@@ -55,8 +55,12 @@ export default function RegisterScreen() {
         setParticipantID(insertedId)
       }
     );
-
     insertAttendance(participantID, selectedConference);
+    setName("");
+    setLastname("");
+    setEmail("");
+    setPhone("");
+    setEventDate(new Date());
   };
 
   return (
